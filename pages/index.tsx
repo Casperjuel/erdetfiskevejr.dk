@@ -1,15 +1,10 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
 import { Heading, ThemeProvider } from "theme-ui";
 import { Box, Label, Input, Button } from "theme-ui";
 
 import type { Theme } from "theme-ui";
-import { useEffect, useState } from "react";
-import Router, { NextRouter, useRouter } from "next/router";
+import { useState } from "react";
+import { NextRouter, useRouter } from "next/router";
 import { ParsedUrlQueryInput } from "querystring";
-import { debounce } from "./src/utils";
 
 export function updateQueryParam(
   router: NextRouter,
@@ -35,32 +30,6 @@ export const theme: Theme = {
     background: "#fff",
     primary: "#33e",
   },
-};
-
-interface Ilocation {
-  accuracy: string;
-  altitude: string;
-  altitudeAccuracy: string;
-  heading: string;
-  latitude: string;
-  longitude: string;
-  speed: string;
-}
-
-const apiFetcher = async (
-  latitude: string,
-  longitude: string
-): Promise<any> => {
-  return await fetch(
-    `https://api.dataforsyningen.dk/adgangsadresser/reverse?x=${latitude}&y=${longitude}&struktur=mini`
-  ).then((response) => response.json());
-};
-
-const findCityName = (latitude: string, longitude: string) => {
-  let result;
-  apiFetcher(latitude, longitude).then((res) => (result = res.body));
-
-  return result;
 };
 
 const Home = (props: { city: any; weather: any }): JSX.Element => {
