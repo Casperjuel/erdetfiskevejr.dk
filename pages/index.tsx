@@ -63,33 +63,19 @@ const findCityName = (latitude: string, longitude: string) => {
   return result;
 };
 
-const Home: NextPage = ({ city, weather }) => {
+const Home = (props: { city: any; weather: any }): JSX.Element => {
+  const { city, weather } = props;
   const [location, setLocation] = useState(city);
   const router = useRouter();
-
-  const positionCallback = (data) => {
-    console.log(data);
-
-    const { latitude, longitude } = data;
-
-    console.log(findCityName(latitude, longitude));
-  };
-  console.log(location);
 
   const handleSearch = () => {
     updateQueryParam(router, { search: location });
   };
 
-  const getPosition = () => {
-    console.log("called");
-
-    return navigator.geolocation.getCurrentPosition((e) => positionCallback(e));
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ mb: 4, p: 20 }}>
-        <form onSubmit={(e) => console.log(e) && handleSearch()}>
+        <form onSubmit={(e) => handleSearch()}>
           <Label sx={{ mb: 2 }} htmlFor="search">
             Indtast by
           </Label>
@@ -102,7 +88,6 @@ const Home: NextPage = ({ city, weather }) => {
           />
           <Button onClick={() => handleSearch()}>Search for weather</Button>
         </form>
-        {!city && <Button onClick={() => getPosition()}> Find location</Button>}
         {weather && (
           <>
             <Heading>{weather.LocationName}</Heading>
@@ -121,6 +106,7 @@ const Home: NextPage = ({ city, weather }) => {
 
 export async function getServerSideProps(context: any) {
   let weatherData = null;
+  const cityName = context.query.search ? context.query.search : null;
   if (context.query?.search) {
     const res = await fetch(
       `http://vejr.eu/api.php?location=${context.query.search}&degree=C"`
@@ -129,7 +115,7 @@ export async function getServerSideProps(context: any) {
   }
 
   return {
-    props: {weather: weatherData }, // will be passed to the page component as props
+    props: { city: cityName, weatherData }, // will be passed to the page component as props
   };
 }
 
