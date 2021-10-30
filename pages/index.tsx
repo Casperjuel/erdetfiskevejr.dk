@@ -5,6 +5,7 @@ import type { Theme } from "theme-ui";
 import { useState } from "react";
 import { NextRouter, useRouter } from "next/router";
 import { ParsedUrlQueryInput } from "querystring";
+import { NextPage } from "next";
 
 export function updateQueryParam(
   router: NextRouter,
@@ -32,26 +33,30 @@ export const theme: Theme = {
   },
 };
 
-const Home = (props: { city: any; weather: any }): JSX.Element => {
-  const { city, weather } = props;
+interface Props {
+  city?: string;
+  weather?: Record<string, string>;
+}
+
+const Home: NextPage<Props> = ({ city, weather }) => {
   const [location, setLocation] = useState(city);
   const router = useRouter();
 
   const handleSearch = () => {
-    updateQueryParam(router, { search: location });
+    updateQueryParam(router, { city: location });
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ mb: 4, p: 20 }}>
         <form onSubmit={(e) => handleSearch()}>
-          <Label sx={{ mb: 2 }} htmlFor="search">
+          <Label sx={{ mb: 2 }} htmlFor="city">
             Indtast by
           </Label>
           <Input
             sx={{ mb: 3 }}
-            id="search"
-            name="search"
+            id="city"
+            name="city"
             onChange={(input) => setLocation(input.target.value)}
             defaultValue={location}
           />
@@ -75,10 +80,12 @@ const Home = (props: { city: any; weather: any }): JSX.Element => {
 
 export async function getServerSideProps(context: any) {
   let weatherData = null;
-  const cityName = context.query.search ? context.query.search : null;
-  if (context.query?.search) {
+  const cityName = context.query.city ? context.query.city : null;
+  console.log(context.query);
+  
+  if (context.query) {
     const res = await fetch(
-      `http://vejr.eu/api.php?location=${context.query.search}&degree=C"`
+      `http://vejr.eu/api.php?location=${context.query.city}&degree=C"`
     );
     weatherData = await res.json();
   }
