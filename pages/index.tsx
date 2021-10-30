@@ -35,7 +35,7 @@ export const theme: Theme = {
 
 interface Props {
   city?: string;
-  weather?: Record<string, string>;
+  weather?: Record<string, any>;
 }
 
 const Home: NextPage<Props> = ({ city, weather }) => {
@@ -91,7 +91,7 @@ export async function getServerSideProps(context: any) {
   }
 
   return {
-    props: { city: cityName, weatherData }, // will be passed to the page component as props
+    props: { city: cityName, weather: weatherData }, // will be passed to the page component as props
   };
 }
 
