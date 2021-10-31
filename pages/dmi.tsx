@@ -10,10 +10,10 @@ import parseISO from 'date-fns/parseISO'
 import format from 'date-fns/format'
 import proj4 from 'proj4'
 
-const API_KEY = '05103498-1cfa-4c76-acc4-d57f352b2a50'
+const API_KEY = 
 const TODAY = new Date(new Date().setHours(0, 0, 0, 0)).toISOString()
 
-const GOOGLE_API_KEY = 'AIzaSyANqxJpumatJ5Eg4laeemVtRGDI832pIMk'
+const GOOGLE_API_KEY = 
 const GOOGLE_API_URL =
   'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
 const WEATHER_API_URL =
