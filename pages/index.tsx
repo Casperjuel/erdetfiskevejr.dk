@@ -7,7 +7,7 @@ import { NextRouter, useRouter } from 'next/router'
 import { ParsedUrlQueryInput } from 'querystring'
 import { NextPage } from 'next'
 
-const API_KEY = '8a5619300db405e4c80af88812815610'
+const API_KEY = process.env.API_URL
 const WEATHER_API_URL = 'https://api.openweathermap.org/data/2.5/weather'
 
 export function updateQueryParam(
